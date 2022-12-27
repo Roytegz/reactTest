@@ -1,7 +1,23 @@
 import React from "react";
 
 const AdminDashboardPage = () => {
-  
+
+  this.paginate = async function (data) {
+    try {
+      const response = await fetch('https://reacttask.mkdlabs.com/v1/api/rest/video/PAGINATE', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'x-project': 'cmVhY3R0YXNrOmQ5aGVkeWN5djZwN3p3OHhpMzR0OWJtdHNqc2lneTV0Nw=='},
+      });
+    }
+      catch (error) {
+        console.error(error);
+        throw error;
+      }
+      
+
   return (
     <>
       <div className="w-full flex justify-center items-center text-7xl h-screen text-gray-700 ">
@@ -35,5 +51,6 @@ const AdminDashboardPage = () => {
     </>
   );
 };
+}
 
 export default AdminDashboardPage;
