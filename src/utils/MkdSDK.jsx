@@ -13,9 +13,38 @@ export default function MkdSDK() {
     this._table = table;
   };
   
-  this.login = async function (email, password, role) {
-    //TODO
-  };
+  this.login = async function (data) {
+    try {
+      const response = await fetch('https://reacttask.mkdlabs.com/v2/api/lambda/login', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'x-project': 'cmVhY3R0YXNrOmQ5aGVkeWN5djZwN3p3OHhpMzR0OWJtdHNqc2lneTV0Nw=='
+        },
+      });
+      
+      
+      const responseData = await response.json();
+    if (!responseData.error) {
+      // Login was successful
+      console.log("login successful");
+      //return {
+        //role: data.role,
+        //token: data.token,
+        //expireAt: data.expire_at,
+        //userId: data.user_id
+     // };
+    } else {
+      // Login was unsuccessful
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+  
 
   this.getHeader = function () {
     return {
@@ -88,6 +117,27 @@ export default function MkdSDK() {
 
   this.check = async function (role) {
     //TODO
+    try {
+      const token = getItem(); 
+      const response = await fetch('https://reacttask.mkdlabs.com/v2/api/lambda/check', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'x-project': 'cmVhY3R0YXNrOmQ5aGVkeWN5djZwN3p3OHhpMzR0OWJtdHNqc2lneTV0Nw=='
+        },
+        body: JSON.stringify({ role })
+      });
+      if (response.ok) {
+        // Token is still valid
+        return true;
+      } else {
+        // Token is invalid
+        return false;
+      }
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   };
 
   return this;

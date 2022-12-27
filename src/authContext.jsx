@@ -14,6 +14,34 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
       //TODO
+      sdk
+    .login(action.email, action.password, action.role)
+    .then((response) => {
+      if (response.error) {
+        alert(response.message);
+      } else {
+        localStorage.setItem("token", response.token);
+        localStorage.setItem("expire_at", response.expire_at);
+        localStorage.setItem("role", action.role);
+        return sdk.check(action.role);
+      }
+    })
+    .then((response) => {
+      if (response.error) {
+        alert(response.message);
+      } else {
+        dispatch({
+          type: "LOGIN_SUCCESS",
+          user: response.user,
+          token: response.token,
+          role: action.role,
+        });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      alert(error.message);
+    });
       return {
         ...state,
       };

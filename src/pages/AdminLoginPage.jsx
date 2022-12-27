@@ -6,6 +6,8 @@ import MkdSDK from "../utils/MkdSDK";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../authContext";
 
+import SnackBar from "../components/SnackBar"
+
 const AdminLoginPage = () => {
   const schema = yup
     .object({
@@ -28,6 +30,23 @@ const AdminLoginPage = () => {
   const onSubmit = async (data) => {
     let sdk = new MkdSDK();
     //TODO
+    try {
+      const response = await sdk.login(data);
+      
+      if (response.success) {
+        // Form submission was successful
+        dispatch({
+          type: "SNACKBAR",
+          payload: { message: "Logged in successfully!" }
+        });
+      } else {
+        // Form submission was unsuccessful
+        alert(response.message);
+      }
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+   }
   };
 
   return (
@@ -80,7 +99,13 @@ const AdminLoginPage = () => {
             value="Sign In"
           />
         </div>
+        <input
+        type= "role"
+        className="hidden"
+        defaultValue="admin"
+        {...register("role")}/>
       </form>
+      <SnackBar />
     </div>
   );
 };
