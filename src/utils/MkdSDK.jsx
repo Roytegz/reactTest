@@ -29,12 +29,12 @@ export default function MkdSDK() {
     if (!responseData.error) {
       // Login was successful
       console.log("login successful");
-      //return {
-        //role: data.role,
-        //token: data.token,
-        //expireAt: data.expire_at,
-        //userId: data.user_id
-     // };
+      return {
+        role: responseData.role,
+        token: responseData.token,
+        expireAt: responseData.expire_at,
+        userId: responseData.user_id
+      };
     } else {
       // Login was unsuccessful
       throw new Error(data.message);
